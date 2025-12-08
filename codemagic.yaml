@@ -1,17 +1,20 @@
 workflows:
   android-workflow:
     name: Android Build
+    instance_type: linux_x2
     max_build_duration: 60
+
     environment:
       vars:
         JAVA_VERSION: "17"
-      android:
-        sdk: 34
-      flutter: null
-
-    instance_type: linux_x2
+      # No "android:" block here — Codemagic YAML does not support it.
 
     scripts:
+      - name: Install Java
+        script: |
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          java -version
+
       - name: Clean project
         script: ./gradlew clean
 
@@ -28,4 +31,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - "your-email@example.com"
+          - your-email@example.com
